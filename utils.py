@@ -100,11 +100,15 @@ def KNN_finetuning(train_data, train_labels, test_data, test_labels):
 
     accuracy = accuracy_score(test_labels, y_pred)
     print("Accuracy:", accuracy)
+    precision = round(precision_score(test_labels, predictions, average='macro', zero_division=1), 4)
+    recall = round(recall_score(test_labels, predictions, average='macro'), 4)
 
     cm = confusion_matrix(test_labels, y_pred)
     # Print and then perform and imshow of the confusion matrix.
     print(cm)
     plt.imshow(cm)
+
+    return {'n_neighbors': best_n_neighbors, 'weights': best_weights, 'metric' : best_metric, 'Accuracy': accuracy, 'Precision': precision, 'Recall': recall}
 
 def SVM_finetuning(train_data, train_labels, test_data, test_labels):
     #kernels = ["linear", "poly", "rbf", "sigmoid", "precomputed"]  Precomputed matrix must be a square matrix. Input is a 195x360 matrix.
@@ -154,3 +158,5 @@ def SVM_finetuning(train_data, train_labels, test_data, test_labels):
     precision = round(precision_score(test_labels, predictions, average='macro'), 4)
     recall = round(recall_score(test_labels, predictions, average='macro'), 4)
     print('Fully supervised results: Accuracy {}, Precision {}, Recall {}'.format(acc, precision, recall))
+
+    return {'Kernel': best_kernel, 'Gamma': best_gamma, 'Accuracy': acc, 'Precision': precision, 'Recall': recall}
