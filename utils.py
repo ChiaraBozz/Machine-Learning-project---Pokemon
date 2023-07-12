@@ -13,7 +13,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.svm import SVC
 from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 import colorsys
 from sklearn import preprocessing
@@ -76,10 +76,11 @@ def KNN_finetuning(train_data, train_labels, test_data, test_labels, list_labels
 
         acc = round(accuracy_score(test_labels, predictions), 4)
         precision = round(precision_score(test_labels, predictions, average='macro', zero_division=1), 4)
-        recall = round(recall_score(test_labels, predictions, average='macro'), 4)
+        recall = round(recall_score(test_labels, predictions, average='macro'), 4)    
+        f1 = f1_score(test_labels, predictions, average='macro')
         #print('Fully supervised results: Accuracy {}, Precision {}, Recall {}'.format(acc, precision, recall))
 
-        results.append({'n_neighbors': n, 'weights': w, 'metric' : m, 'Accuracy': acc, 'Precision': precision, 'Recall': recall})
+        results.append({'n_neighbors': n, 'weights': w, 'metric' : m, 'Accuracy': acc, 'Precision': precision, 'Recall': recall, 'F1-score': f1})
     
     knn_df = pd.DataFrame(results)
     knn_df.sort_values(by='Accuracy', ascending=False, inplace=True)
@@ -104,6 +105,7 @@ def KNN_finetuning(train_data, train_labels, test_data, test_labels, list_labels
     recall = round(recall_score(test_labels, predictions, average='macro'), 4)
 
     cm = confusion_matrix(test_labels, y_pred)
+    
     # Plot confusion matrix
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=list_labels, yticklabels=list_labels)
@@ -112,7 +114,7 @@ def KNN_finetuning(train_data, train_labels, test_data, test_labels, list_labels
     plt.title('Confusion Matrix')
     plt.xlabel('Predicted')
     plt.ylabel('Actual')
-    return {'n_neighbors': best_n_neighbors, 'weights': best_weights, 'metric' : best_metric, 'Accuracy': accuracy, 'Precision': precision, 'Recall': recall}
+    return {'n_neighbors': best_n_neighbors, 'weights': best_weights, 'metric' : best_metric, 'Accuracy': accuracy, 'Precision': precision, 'Recall': recall, 'F1-score': f1}
 
 def SVM_finetuning(train_data, train_labels, test_data, test_labels, list_labels):
     #kernels = ["linear", "poly", "rbf", "sigmoid", "precomputed"]  Precomputed matrix must be a square matrix. Input is a 195x360 matrix.
@@ -134,9 +136,10 @@ def SVM_finetuning(train_data, train_labels, test_data, test_labels, list_labels
             acc = round(accuracy_score(test_labels, predictions), 4)
             precision = round(precision_score(test_labels, predictions, average='macro', zero_division=1), 4)
             recall = round(recall_score(test_labels, predictions, average='macro'), 4)
+            f1 = f1_score(test_labels, predictions, average='macro')
             #print('Fully supervised results: Accuracy {}, Precision {}, Recall {}'.format(acc, precision, recall))
 
-            results.append({'Kernel': kernel, 'Gamma': gamma, 'Accuracy': acc, 'Precision': precision, 'Recall': recall})
+            results.append({'Kernel': kernel, 'Gamma': gamma, 'Accuracy': acc, 'Precision': precision, 'Recall': recall, 'F1-score': f1})
 
     svm_df = pd.DataFrame(results)
     svm_df.sort_values(by='Accuracy', ascending=False, inplace=True)
@@ -168,4 +171,4 @@ def SVM_finetuning(train_data, train_labels, test_data, test_labels, list_labels
     recall = round(recall_score(test_labels, predictions, average='macro'), 4)
     print('Fully supervised results: Accuracy {}, Precision {}, Recall {}'.format(acc, precision, recall))
 
-    return {'Kernel': best_kernel, 'Gamma': best_gamma, 'Accuracy': acc, 'Precision': precision, 'Recall': recall}
+    return {'Kernel': best_kernel, 'Gamma': best_gamma, 'Accuracy': acc, 'Precision': precision, 'Recall': recall, 'F1-score': f1}
