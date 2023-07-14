@@ -52,7 +52,7 @@ def PCA_KNN(train_data, test_data, train_labels, test_labels, n_components, rand
     print(cm)
     plt.imshow(cm)
 
-def KNN_finetuning(train_data, train_labels, test_data, test_labels, list_labels):
+def KNN_hyperparameter_tuning(train_data, train_labels, test_data, test_labels, list_labels):
     n_neighbors = [3, 5, 7, 9, 11, round(math.sqrt(train_data.shape[0]))]
     weights = ['uniform', 'distance']
     metric = ['euclidean', 'manhattan', 'cosine', 'chebyshev', 'minkowski']
@@ -116,7 +116,7 @@ def KNN_finetuning(train_data, train_labels, test_data, test_labels, list_labels
     plt.ylabel('Actual')
     return {'n_neighbors': best_n_neighbors, 'weights': best_weights, 'metric' : best_metric, 'Accuracy': accuracy, 'Precision': precision, 'Recall': recall, 'F1-score': f1}
 
-def SVM_finetuning(train_data, train_labels, test_data, test_labels, list_labels):
+def SVM_hyperparameter_tuning(train_data, train_labels, test_data, test_labels, list_labels):
     #kernels = ["linear", "poly", "rbf", "sigmoid", "precomputed"]  Precomputed matrix must be a square matrix. Input is a 195x360 matrix.
     kernels = ["linear", "poly", "rbf", "sigmoid"]
     gammas = ["scale", "auto"]
