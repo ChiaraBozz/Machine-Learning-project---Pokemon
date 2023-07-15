@@ -103,6 +103,7 @@ def KNN_hyperparameter_tuning(train_data, train_labels, test_data, test_labels, 
     print("Accuracy:", accuracy)
     precision = round(precision_score(test_labels, predictions, average='macro', zero_division=1), 4)
     recall = round(recall_score(test_labels, predictions, average='macro'), 4)
+    f1 = f1_score(test_labels, predictions, average='macro')
 
     cm = confusion_matrix(test_labels, y_pred)
     
@@ -170,5 +171,6 @@ def SVM_hyperparameter_tuning(train_data, train_labels, test_data, test_labels, 
     precision = round(precision_score(test_labels, predictions, average='macro'), 4)
     recall = round(recall_score(test_labels, predictions, average='macro'), 4)
     print('Fully supervised results: Accuracy {}, Precision {}, Recall {}'.format(acc, precision, recall))
+    f1 = f1_score(test_labels, predictions, average='macro')
 
     return {'Kernel': best_kernel, 'Gamma': best_gamma, 'Accuracy': acc, 'Precision': precision, 'Recall': recall, 'F1-score': f1}
